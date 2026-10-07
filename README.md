@@ -82,19 +82,19 @@ NewsByte is a web application with four connected workspaces:
 ---
 
 
-## 4. Target Users / Use Case
+## 4. Proposed Solution
 
-User	                          Use case
+NewsByte turns a scattered, one-sided news search into a structured, source-grounded research workflow that runs entirely on the user's own machine:
 
-1.Students and debaters:	       Prepare both sides of a motion with real news evidence.
+1. **Collect:** Fetch articles by topic and year range from Google News RSS (with DuckDuckGo as fallback), and enrich thin snippets with text scraped from the article page.
+2. **Remember:** Embed every article with `all-MiniLM-L6-v2` and store it in ChromaDB, so the archive grows with use and can be searched by meaning.
+3. **Organize:** Let the user clip the best articles onto the Editor's Desk and keep notes in a Research Notebook.
+4. **Reason:** Gemma 4 E4B answers questions using only the clipped articles (Clipped Desk mode) or the archive (Global Archive mode), naming its sources.
+5. **Balance:** For any motion, Gemma plans a "supporting" and an "opposing" query, and a stance verifier checks each article before it appears in the **For** or **Against** column.
+6. **Stay neutral:** On disputed issues, the model refuses to give a personal opinion and offers a factual summary of the articles instead.
+7. **Follow the markets:** The Finance Desk shows Indian stocks in ₹ and international stocks and crypto in $, next to fresh financial headlines. Users can clip market stories and ask Gemma what the coverage says, with sources. The model reports what articles say and does not give investment advice.
 
-2.Researchers and journalists:	 Collect and compare coverage of a topic over a period of years, with notes.
-
-3.Curious readers:	             Understand a controversial issue without staying inside one viewpoint.
-
-4.Privacy-conscious:             users	Use AI on their research without sending questions to a cloud AI service.
-
-Example: a debate student enters the motion "Should social media be restricted for children?", sets the years 2023 to 2026, and gets supporting and opposing articles in two columns. She clips the best ones to the Editor's Desk, adds notes, and asks the Synthesis Engine to compare the strongest arguments, with sources.
+The result is a private, transparent research desk where every claim can be traced to an article.
 
 --
 
