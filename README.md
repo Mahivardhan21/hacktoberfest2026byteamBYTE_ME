@@ -179,23 +179,42 @@ Why an open-source, local approach suits this project: research questions and no
 flowchart LR
     U["User - Web Interface"] --> API["FastAPI Backend"]
 
-    subgraph Collection
-        NS["News Sources: Google News RSS and DuckDuckGo News"]
+    subgraph COL["Collection Layer"]
+        NS["News Sources: Google News RSS and DuckDuckGo"]
+        SC["Article Scraper: BeautifulSoup"]
+        MD["Market Data: stock and crypto price sources"]
+    end
+
+    subgraph MEM["Memory Layer"]
+        EMB["Embedding Model: all-MiniLM-L6-v2"]
+        VDB[("ChromaDB Vector Archive")]
+    end
+
+    subgraph AIL["AI Layer"]
+        RET["Retriever"]
+        PRM["Prompt Builder with rules"]
+        OLL["Ollama Server"]
+        GEM["Gemma 4 E4B"]
     end
 
     API --> NS
-    NS --> EMB["Embedding Model: all-MiniLM-L6-v2"]
-    EMB --> VDB[("ChromaDB Vector Archive")]
+    API --> MD
+    MD --> API
+    NS --> SC
+    SC --> EMB
+    EMB --> VDB
 
-    API --> RET["Retriever"]
+    API --> RET
     RET --> VDB
-    RET --> PRM["Prompt Builder with rules"]
-    PRM --> OLL["Ollama Server"]
-    OLL --> GEM["Gemma 4 E4B"]
+    RET --> PRM
+    PRM --> OLL
+    OLL --> GEM
     GEM --> OLL
     OLL --> API
+
     API --> U
 ```
+
 The system has three layers:
 -**Presentation layer:** an HTML, CSS and JavaScript interface with four workspaces. Markdown from the model is rendered as a formatted report.
 -**Application layer:** a FastAPI service that coordinates news collection, retrieval, prompt building and responses.
@@ -221,24 +240,32 @@ The system has three layers:
 |GET /daily_edition|Fetch fresh headlines (max about 2 days old) for four sections in parallel; shows the top 6 per section|None|International, national, financial and sports lists|
 |GET /market_data|Provide the Finance Desk data in three groups: indian (NIFTY 50, RELIANCE, TCS, HDFC BANK, INFY, in ₹), international (S&P 500, NASDAQ, AAPL, MSFT, NVDA, in $) and crypto (BTC, ETH, SOL, BNB, XRP, in $)|None|Symbol, formatted price, percentage change|
 |Article Scraper|Fetch each article page asynchronously (4-second timeout) and use its first paragraphs (up to 700 characters) to replace thin RSS snippets; pages that fail keep the RSS text|Article URLs|Richer snippets|
+|Market Data Provider|Fetch prices from free public market-data sources (for example yfinance for stocks and indices, CoinGecko for crypto), cache results for a short time, and show a "last updated" time|Symbol list|Prices and change|
+|POST /search_news|Fetch and store articles for a topic and year range, with pagination|Topic, from-year, to-year, page|Article cards|
 ---
 ## 12. Data / Information Flow
 
 ```mermaid
 flowchart TD
-    A["1. User enters topic and year range"] --> B["2. Backend fetches articles from news sources"]
-    B --> C["3. Duplicates removed by URL hash"]
-    C --> D["4. Text embedded with MiniLM"]
-    D --> E[("5. Saved in ChromaDB with title, source, year, URL")]
+    A["1. User enters topic and year range"] --> B["2. Backend fetches articles from Google News RSS, DuckDuckGo as fallback"]
+    B --> B2["3. Article pages scraped to enrich snippets"]
+    B2 --> C["4. Repeated headlines dropped, URL hash used as record ID"]
+    C --> D["5. Text embedded with MiniLM"]
+    D --> E[("6. Saved in ChromaDB with title, source, year, URL")]
 
-    F["6. User asks a question"] --> G{"7. Mode"}
-    G -->|Clipped Desk| H["8a. Use only the articles dragged to the desk"]
-    G -->|Global Archive| I["8b. Search ChromaDB and add live headlines"]
+    F["7. User asks a question"] --> G{"8. Mode"}
+    G -->|Clipped Desk| H["9a. Use only the articles dragged to the desk"]
+    G -->|Global Archive| I["9b. Semantic search in ChromaDB"]
     E --> I
-    H --> J["9. Prompt built with rules and context"]
+    H --> J["10. Prompt built with rules and context"]
     I --> J
-    J --> K["10. Gemma 4 E4B on Ollama"]
-    K --> L["11. Cited answer rendered as a report"]
+    J --> K["11. Gemma 4 E4B on Ollama"]
+    K --> L["12. Cited answer rendered as a report"]
+
+    M["User opens Daily Edition or Finance Desk"] --> N["Headlines fetched for four sections in parallel, last 2 days"]
+    N --> B2
+    M --> P["Market prices fetched: Indian in rupees, international and crypto in dollars"]
+    P --> Q["Dashboard shows price and percentage change with gain or loss colour"]
 ```
 ---
 
