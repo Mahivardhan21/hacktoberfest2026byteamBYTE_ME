@@ -1,18 +1,18 @@
-NewsByte: Digital Archive and Debate Synthesis Hub
+## NewsByte: Digital Archive and Debate Synthesis Hub
 
-Hacktober Fest Open Source AI Hackathon | Qualifier Submission | Team BYTE_ME
+## Hacktober Fest Open Source AI Hackathon | Qualifier Submission | Team BYTE_ME
 
 ---
 
-1. Project Name
+## 1. Project Name
 
 NewsByte is a local, open-source AI research desk that collects news articles, organizes them, and uses Gemma 4 E4B running on Ollama to synthesize them and to separate opposing viewpoints on any topic with the help of relevant articles.
 
 ---
 
-2. Problem Statement
+## 2. Problem Statement
 
-## 2. Best Use of Gemma 4 / Gemma 4 Open-Source
+## Best Use of Gemma 4 / Gemma 4 Open-Source
 
 NewsByte is a research application that leverages Google's lightweight **Gemma 4 E4B** open-weight model to eliminate hallucinations, enforce factual citations, and analyze opposing perspectives on complex news topics.
 
@@ -68,7 +68,7 @@ NewsByte is a research application that leverages Google's lightweight **Gemma 4
 
 --
 
-3. Project Overview
+## 3. Project Overview
 
 NewsByte is a web application with four connected workspaces:
 
@@ -82,7 +82,7 @@ NewsByte is a web application with four connected workspaces:
 ---
 
 
-4. Target Users / Use Case
+## 4. Target Users / Use Case
 
 User	                          Use case
 
@@ -98,7 +98,7 @@ Example: a debate student enters the motion "Should social media be restricted f
 
 --
 
-5. Objectives
+## 5. Objectives
    
 1.Build a source-grounded news research assistant using only open-source AI.
 
@@ -116,7 +116,7 @@ Example: a debate student enters the motion "Should social media be restricted f
 
 ---
 
-6. Target Users / Use Case
+## 6. Target Users / Use Case
 | User | Use case |
 |---|---|
 | **Students and debaters** | Prepare both sides of a motion with real news evidence. |
@@ -126,7 +126,7 @@ Example: a debate student enters the motion "Should social media be restricted f
 
 ---
 
-7. Open-Source AI Technology Selected
+## 7. Open-Source AI Technology Selected
    
 | Component | Role | Type |
 |---|---|---|
@@ -136,7 +136,7 @@ Example: a debate student enters the motion "Should social media be restricted f
 | **ChromaDB** | Stores embeddings and metadata on disk and performs similarity search | Open-source vector database |
 ---
 
-8. Why This Technology Was Selected
+## 8. Why This Technology Was Selected
 
 Gemma 4 E4B
 
@@ -159,7 +159,7 @@ Why an open-source, local approach suits this project: research questions and no
 
 ---
 
-9. AI's Role in the System
+## 9. AI's Role in the System
 
 | Task | What the AI does |
 |---|---|
@@ -172,7 +172,7 @@ Why an open-source, local approach suits this project: research questions and no
 
 ---
 
-10. System Architecture
+## 10. System Architecture
 
 ```mermaid
 flowchart LR
@@ -202,7 +202,7 @@ The system has three layers:
 
 ---
 
-11. Component-Level Architecture
+## 11. Component-Level Architecture
 
 | Component | Responsibility | Input | Output |
 |---|---|---|---|
@@ -219,7 +219,7 @@ The system has three layers:
 | Response Formatter | Cleans output and attaches source links | Model output | Display-ready result |
 
 ---
-12. Data / Information Flow
+## 12. Data / Information Flow
 
 ```mermaid
 flowchart TD
