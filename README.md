@@ -12,23 +12,58 @@ NewsByte is a local, open-source AI research desk that collects news articles, o
 
 2. Problem Statement
 
-Best Use of Gemma 4 / Gemma 4 Open-Source
-Build a functional project that makes meaningful use of Google's lightweight Gemma 4 open-weight model. The project should demonstrate a practical use of Gemma 4 rather than functioning as a simple API demonstration.
-What the team needs to build
-•	Choose a clear problem that can benefit from Gemma 4.
-•	Use Gemma 4 meaningfully in the core workflow of the application.
-•	The project may work with text, images, or multimodal inputs where appropriate.
-•	Build a functional prototype or system that demonstrates the model's contribution to the solution.
-•	Clearly explain the input, processing flow, model interaction, and final output.
-Important expectations
-•	Gemma 4 should have a meaningful role in the system rather than being included only to satisfy the challenge.
-•	The project should go beyond a superficial wrapper around the model.
-•	Teams should explain why Gemma 4 was selected and what part of the problem it solves.
-•	The final system should demonstrate actual engineering, integration, and a clear user-facing or technical outcome.
-Possible directions
-Teams may explore multimodal assistants, productivity tools, learning applications, creative tools, document understanding, community-focused applications, or other focused AI systems where Gemma 4 provides a meaningful capability.
-Expected final outcome
-A working project that clearly demonstrates a useful application of Gemma 4 and explains how the model contributes to the system.
+## 2. Best Use of Gemma 4 / Gemma 4 Open-Source
+
+NewsByte is a research application that leverages Google's lightweight **Gemma 4 E4B** open-weight model to eliminate hallucinations, enforce factual citations, and analyze opposing perspectives on complex news topics.
+
+---
+
+### What the team needs to build
+
+* **Choose a clear problem that can benefit from Gemma 4:**
+  Readers analyzing controversial news topics encounter fragmented coverage across multiple years and tend to consume single-sided viewpoints without exposed counterarguments.
+
+* **Use Gemma 4 meaningfully in the core workflow of the application:**
+  Gemma 4 acts as the central reasoning engine that performs query planning for debate motions, checks article stances (`FOR`/`AGAINST`/`NEUTRAL`), and synthesizes grounded answers with strict source citations.
+
+* **The project may work with text, images, or multimodal inputs where appropriate:**
+  The system processes multi-year news text, RSS snippets, scraped articles, and user research notes to build multi-column debate analyses and structured research reports.
+
+* **Build a functional prototype or system that demonstrates the model's contribution to the solution:**
+  A fully integrated local web application featuring four active workspaces (**Global Wire**, **Editor's Desk**, **Synthesis Engine**, and **Debate Room**) powered entirely by a locally hosted Gemma 4 instance.
+
+* **Clearly explain the input, processing flow, model interaction, and final output:**
+  The system ingests user keywords/motions, fetches and embeds articles into ChromaDB, queries Gemma 4 via Ollama for stance checking and synthesis, and renders verified two-column debate feeds and cited reports.
+
+---
+
+### Important expectations
+
+* **Gemma 4 should have a meaningful role in the system rather than being included only to satisfy the challenge:**
+  Without Gemma 4, the application is merely a search feed; the model actively drives the automated query expansion, stance verification, and source-grounded synthesis pipelines.
+
+* **The project should go beyond a superficial wrapper around the model:**
+  The architecture uses a multi-step agentic workflow and a dual-mode RAG pipeline (ChromaDB + Ollama) where Gemma 4's outputs programmatically filter, re-rank, and validate data before UI rendering.
+
+* **Teams should explain why Gemma 4 was selected and what part of the problem it solves:**
+  Gemma 4 E4B was chosen for its edge-runnable effective 4.5B architecture, 128K context window, superior instruction following for JSON outputs, and absolute privacy for local research workflows.
+
+* **The final system should demonstrate actual engineering, integration, and a clear user-facing or technical outcome:**
+  Built with FastAPI, ChromaDB, sentence-transformers, and Ollama, delivering an end-to-end local application that produces verified, non-hallucinated debate and research briefing reports.
+
+---
+
+### Possible directions
+
+* **Focused AI Systems & Productivity Tools:**
+  NewsByte falls under source-grounded research assistants and privacy-focused productivity tools, enabling students, debaters, and journalists to analyze multi-perspective news without sending queries to third-party cloud services.
+
+---
+
+### Expected final outcome
+
+* **A working project that clearly demonstrates a useful application of Gemma 4 and explains how the model contributes to the system:**
+  A complete, functional local web application where Gemma 4 handles multi-agent reasoning—turning unstructured news articles into cited, balanced, and verified research briefs.
 
 
 --
