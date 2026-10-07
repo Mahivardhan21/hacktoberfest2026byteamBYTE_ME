@@ -417,4 +417,4 @@ A working web application running locally, which a judge can use in a live demo:
 | **Hardware limits** | Run one model, use a CPU embedding model, and document the minimum memory needed. |
 | **Controversial topics** | Present both sides with sources, refuse personal opinions, and label outputs as AI-generated. |
 | **Limited time in the hackathon** | Build in phases with a working demo early, and keep optional features for the end. |
-|**Finance content mistaken for advice**||Show prices as information only, keep Gemma to summarizing what articles report, refuse predictions and trade recommendations, and label outputs as AI-generated, not financial advice.|
+|**Finance content mistaken for advice**|Show prices as information only, keep Gemma to summarizing what articles report, refuse predictions and trade recommendations, and label outputs as AI-generated, not financial advice.|
