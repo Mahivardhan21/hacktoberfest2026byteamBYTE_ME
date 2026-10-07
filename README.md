@@ -169,6 +169,7 @@ Why an open-source, local approach suits this project: research questions and no
 | Query planning for debates | Gemma 4 E4B turns a motion into separate "supporting" and "opposing" search queries. |
 | Stance verification | Gemma 4 E4B labels each fetched article `FOR`, `AGAINST` or `NEUTRAL` for the motion, with a one-line reason, so wrongly placed articles are removed or moved. |
 | Comparison | Gemma 4 E4B summarizes where the clipped articles agree and disagree. |
+|Market context|For clipped finance articles, Gemma 4 E4B summarizes what the coverage says about a market move, citing the articles. It does not predict prices or recommend trades|
 
 ---
 
@@ -196,9 +197,9 @@ flowchart LR
     API --> U
 ```
 The system has three layers:
-*Presentation layer: an HTML, CSS and JavaScript interface with four workspaces. Markdown from the model is rendered as a formatted report.
-*Application layer: a FastAPI service that coordinates news collection, retrieval, prompt building and responses.
-*AI and data layer: Ollama with Gemma 4 E4B for reasoning, and ChromaDB with an embedding model for memory and retrieval.
+-**Presentation layer:** an HTML, CSS and JavaScript interface with four workspaces. Markdown from the model is rendered as a formatted report.
+-**Application layer:** a FastAPI service that coordinates news collection, retrieval, prompt building and responses.
+-**AI and data layer:** Ollama with Gemma 4 E4B for reasoning, and ChromaDB with an embedding model for memory and retrieval.
 
 ---
 
@@ -217,7 +218,9 @@ The system has three layers:
 | Ollama and Gemma 4 E4B | Generates answers, query plans and stance labels | Prompt | Text or JSON |
 | Stance Verifier | Calls Gemma to label each debate article and filters mismatches | Motion, article snippet | `FOR`, `AGAINST` or `NEUTRAL` with reason |
 | Response Formatter | Cleans output and attaches source links | Model output | Display-ready result |
-
+|GET /daily_edition|Fetch fresh headlines (max about 2 days old) for four sections in parallel; shows the top 6 per section|None|International, national, financial and sports lists|
+|GET /market_data|Provide the Finance Desk data in three groups: indian (NIFTY 50, RELIANCE, TCS, HDFC BANK, INFY, in ₹), international (S&P 500, NASDAQ, AAPL, MSFT, NVDA, in $) and crypto (BTC, ETH, SOL, BNB, XRP, in $)|None|Symbol, formatted price, percentage change|
+|Article Scraper|Fetch each article page asynchronously (4-second timeout) and use its first paragraphs (up to 700 characters) to replace thin RSS snippets; pages that fail keep the RSS text|Article URLs|Richer snippets|
 ---
 ## 12. Data / Information Flow
 
@@ -295,6 +298,8 @@ The Synthesis Engine follows a shorter loop: retrieve context, build a rule-base
 8. **Neutrality guardrail:** the AI refuses to give personal opinions on disputed issues and offers factual summaries instead.
 9. **Debate and Perspective Room:** For and Against columns for any motion, with the model checking each article's stance.
 10. **Readable output:** answers rendered as headings and lists, and clear error messages when the backend or model is not running.
+11.**Finance Desk:** Indian markets in ₹, international markets and crypto in $, with price, percentage change and gain/loss colouring, plus a Financial headlines section and one-click clipping of finance articles for cited summaries.
+12.**Daily Edition:** a front page of fresh headlines in four sections (International, National, Financial, Sports) with a market ticker.
 
 ---
 
@@ -312,11 +317,12 @@ The work is divided into phases so that a working demo exists early and extra fe
 | **6. Debate Room** | Query planner, stance verifier with JSON output, filtering, two-column display | Verified For and Against columns |
 | **7. Interface** | Drag and drop, notebook, loading states, formatted output | Complete demo flow |
 | **8. Tuning and testing** | Test several topics, tune prompts and context size, keep the model loaded, shorten answers | Reliable demo |
+|**9. Daily Edition and Finance Desk**|Parallel section fetches for fresh headlines; /market_data route with Indian, international and crypto groups and correct currency symbols; live prices from free public sources with short caching|Front page and market dashboard|
 
 **Local performance plan:** keep the model loaded between requests (`keep_alive`), limit the context size and answer length, and send only the top few passages to the model.
 
 **Fallback plan:** if live news fetching fails or is rate limited, the app uses articles already stored in the archive, plus a small set of sample articles prepared for the demo.
-
+**Secrets handling:** because the model runs locally through Ollama, no cloud API key is needed. Any optional keys are read from environment variables and never committed to the repository.
 ---
 
 
@@ -329,7 +335,7 @@ A working web application running locally, which a judge can use in a live demo:
 - Ask a question in "Clipped Desk" or "Global Archive" mode and receive a cited answer from Gemma 4 E4B.
 - Enter a debate motion and see articles sorted into **For** and **Against** with the stance checked by the model.
 - A public repository with setup steps: install Ollama, run `ollama pull gemma4:e4b`, install the Python dependencies, start the FastAPI server, and open the page in a browser.
-
+- Open the Daily Edition and see fresh headlines in four sections.
 ---
 
 
@@ -343,6 +349,7 @@ A working web application running locally, which a judge can use in a live demo:
 - **Export:** generate a research brief or a debate case file from the desk and notebook.
 - **Multimodal input:** use Gemma's image and audio abilities for news photos, charts or recorded speeches.
 - **Team and classroom use:** containerize with Docker and run ChromaDB in server mode with shared archives.
+-**Finance extensions:** user-defined watchlists, price charts over time, and a view that lines up a stock's moves with the headlines published at that time.
 
 ---
 
@@ -362,6 +369,8 @@ A working web application running locally, which a judge can use in a live demo:
 | Requests | HTTP client for news feeds, pages and the Ollama API |
 | marked.js | Renders model output as formatted text in the browser |
 | Python standard library | XML (RSS) parsing, URL handling, hashing |
+|yfinance (or similar)|Stock and index prices for the Finance Desk|
+|CoinGecko public API (or similar)|Crypto prices for the Finance Desk|
 
 ---
 
@@ -380,3 +389,4 @@ A working web application running locally, which a judge can use in a live demo:
 | **Hardware limits** | Run one model, use a CPU embedding model, and document the minimum memory needed. |
 | **Controversial topics** | Present both sides with sources, refuse personal opinions, and label outputs as AI-generated. |
 | **Limited time in the hackathon** | Build in phases with a working demo early, and keep optional features for the end. |
+|**Finance content mistaken for advice**||Show prices as information only, keep Gemma to summarizing what articles report, refuse predictions and trade recommendations, and label outputs as AI-generated, not financial advice.|
