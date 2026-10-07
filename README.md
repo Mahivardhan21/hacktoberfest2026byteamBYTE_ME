@@ -79,6 +79,7 @@ NewsByte is a web application with four connected workspaces:
 | **III. Synthesis Engine** | Ask Gemma 4 E4B a question. It answers only from the clipped articles, or from the stored archive plus live news, and cites its sources. |
 | **IV. Debate and Perspective Room** | Enter a motion and a year range. The system shows articles **For** and **Against** the motion in two columns. |
 |**V. Finance Desk**|A market dashboard with three tabs: Indian markets (NIFTY 50 and major stocks, shown in ₹), International markets (S&P 500, NASDAQ and major stocks, shown in $) and Crypto (BTC, ETH, SOL, BNB, XRP, shown in $). Each row shows symbol, price and percentage change, colour-coded for gain or loss. It sits beside the Financial headlines section, and any finance article can be clipped to the Editor's Desk so Gemma can summarize it with sources|
+|NewsByte Pro|	A more refined version of NewsByte, built for a much better user experience. It gives heavier users (students, debaters, researchers and journalists) a more polished, comfortable and efficient place to work, with the same cited, source-grounded answers underneath.|
 ---
 
 
